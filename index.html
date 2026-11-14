@@ -1,376 +1,54 @@
-from pathlib import Path
-import zipfile, textwrap
-
-root = Path("/mnt/data/sri-balina-portfolio")
-root.mkdir(exist_ok=True)
-
-html = r'''<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f4f5f1">
-  <meta name="description" content="Rathna Sri Balina — network reliability, service-provider engineering, automation and applied machine learning.">
-  <meta property="og:title" content="Rathna Sri Balina — Network reliability & automation">
-  <meta property="og:description" content="Finding the signals before systems fail.">
-  <title>Rathna Sri Balina — Network reliability & automation</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      color-scheme: light;
-      --bg:#f4f5f1; --paper:#fbfcf9; --ink:#182522; --muted:#66736d;
-      --line:#dce2dc; --accent:#176b61; --accent-soft:#e4efeb;
-      --warm:#d97757; --shadow:0 18px 55px rgba(22,42,35,.08);
-      --mono:"DM Mono",monospace; --sans:"DM Sans",sans-serif;
-      --serif:"Playfair Display",Georgia,serif;
-    }
-    [data-theme="dark"] {
-      color-scheme:dark; --bg:#121a18; --paper:#192320; --ink:#edf2ed;
-      --muted:#a2b0a8; --line:#30413a; --accent:#81c6b5; --accent-soft:#213a33;
-      --warm:#e39a7e; --shadow:0 18px 55px rgba(0,0,0,.24);
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth;scroll-padding-top:92px}
-    body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 var(--sans);transition:background .25s,color .25s}
-    a{color:inherit;text-decoration:none}
-    button{font:inherit}
-    button:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
-    .wrap{width:min(1120px,calc(100% - 48px));margin:auto}
-    .mono{font:12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-    .topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
-    .nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-    .brand{font-weight:700;letter-spacing:-.04em;font-size:17px}
-    .brand span{color:var(--accent)}
-    .navlinks{display:flex;align-items:center;gap:26px}
-    .navlinks a{font-size:13px;color:var(--muted);transition:color .2s}
-    .navlinks a:hover{color:var(--accent)}
-    .navtools{display:flex;align-items:center;gap:10px}
-    .icon-btn,.menu-btn{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:50%;width:38px;height:38px;display:grid;place-items:center;cursor:pointer}
-    .menu-btn{display:none;border-radius:10px}
-    .hero{padding:104px 0 76px;display:grid;grid-template-columns:1.25fr .75fr;gap:60px;align-items:center}
-    .eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:26px}
-    .dot{width:7px;height:7px;border-radius:50%;background:#4e9a79;box-shadow:0 0 0 5px color-mix(in srgb,#4e9a79 14%,transparent)}
-    h1{font:600 clamp(54px,8vw,100px)/.98 var(--serif);letter-spacing:-.055em;margin:0 0 28px;max-width:760px}
-    h1 em{font-style:normal;color:var(--accent)}
-    .hero-copy{font-size:18px;color:var(--muted);max-width:610px;margin:0}
-    .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
-    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 17px;border-radius:7px;border:1px solid var(--line);font-size:13px;font-weight:600;transition:transform .2s,background .2s}
-    .btn:hover{transform:translateY(-2px)}
-    .btn.primary{background:var(--ink);border-color:var(--ink);color:var(--bg)}
-    .btn.secondary{background:var(--paper)}
-    .hero-art{position:relative;min-height:330px;border:1px solid var(--line);border-radius:14px;background:var(--paper);overflow:hidden;box-shadow:var(--shadow)}
-    .art-head{display:flex;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--line)}
-    .art-head span:last-child{color:var(--accent)}
-    .signal-svg{width:100%;height:220px;display:block;padding:14px}
-    .art-foot{position:absolute;bottom:0;left:0;right:0;padding:13px 20px;background:var(--accent-soft);display:flex;justify-content:space-between;gap:12px;font:11px var(--mono);color:var(--muted)}
-    .signal-path{stroke:var(--accent);stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1000;stroke-dashoffset:1000;animation:trace 3s ease forwards}
-    .signal-grid{stroke:var(--line);stroke-width:1;stroke-dasharray:3 6}
-    @keyframes trace{to{stroke-dashoffset:0}}
-    .ticker{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:17px 0;display:flex;gap:28px;overflow:hidden;white-space:nowrap}
-    .ticker span{font:11px var(--mono);letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
-    .ticker b{color:var(--accent);font-weight:400;margin-right:9px}
-    section.content{padding:92px 0;border-bottom:1px solid var(--line)}
-    .section-head{display:grid;grid-template-columns:220px 1fr;gap:40px;margin-bottom:42px}
-    .section-index{padding-top:8px}
-    .section-index .mono{color:var(--accent)}
-    h2{font:600 clamp(34px,4vw,52px)/1.08 var(--serif);letter-spacing:-.04em;margin:0}
-    .intro{font-size:18px;color:var(--muted);max-width:650px;margin:12px 0 0}
-    .about-grid{display:grid;grid-template-columns:220px 1fr;gap:40px}
-    .about-note{background:var(--accent-soft);border-radius:10px;padding:22px;height:max-content}
-    .about-note strong{display:block;font:600 34px var(--serif);color:var(--accent)}
-    .about-note p{font-size:13px;color:var(--muted);margin:5px 0 0}
-    .prose{max-width:690px;color:var(--muted)}
-    .prose p{margin:0 0 18px}
-    .experience{display:grid;grid-template-columns:220px 1fr;gap:40px}
-    .timeline{border-left:1px solid var(--line);padding-left:28px}
-    .role{position:relative;padding:0 0 34px}
-    .role:last-child{padding-bottom:0}
-    .role:before{content:"";position:absolute;left:-34px;top:7px;width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--bg);border:1px solid var(--accent)}
-    .role h3{font-size:18px;margin:0;font-weight:700}
-    .role .meta{font:12px var(--mono);color:var(--accent);margin:5px 0 12px}
-    .role p{margin:0;color:var(--muted);max-width:680px}
-    .project-tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
-    .filter{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:99px;padding:8px 14px;font-size:12px;cursor:pointer}
-    .filter[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
-    .projects{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-    .project{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:25px;min-height:240px;display:flex;flex-direction:column;transition:transform .22s,border-color .22s,box-shadow .22s}
-    .project:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:var(--shadow)}
-    .project-top{display:flex;justify-content:space-between;gap:10px;margin-bottom:22px}
-    .project-tag{font:10px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
-    .project h3{font:600 25px/1.15 var(--serif);margin:0 0 10px}
-    .project p{font-size:14px;color:var(--muted);margin:0 0 22px}
-    .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto}
-    .chip{font:10px var(--mono);border:1px solid var(--line);padding:5px 8px;border-radius:4px;color:var(--muted)}
-    .project .more{margin-top:18px;color:var(--accent);font-size:12px;font-weight:700}
-    .skills-layout{display:grid;grid-template-columns:220px 1fr;gap:40px}
-    .skill-groups{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-    .skill-group{background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:20px}
-    .skill-group h3{font-size:14px;margin:0 0 14px}
-    .skill-group p{font-size:13px;color:var(--muted);margin:0;line-height:1.9}
-    .recognition-list{display:grid;grid-template-columns:220px 1fr;gap:40px}
-    .recognition-items{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-    .recognition{border:1px solid var(--line);border-radius:9px;padding:20px;background:var(--paper)}
-    .recognition .mono{color:var(--accent)}
-    .recognition h3{font-size:15px;margin:10px 0 5px}
-    .recognition p{font-size:13px;color:var(--muted);margin:0}
-    .contact-panel{background:var(--ink);color:var(--bg);padding:44px;border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:30px}
-    .contact-panel h2{max-width:520px}
-    .contact-panel p{color:color-mix(in srgb,var(--bg) 70%,transparent);margin:12px 0 0}
-    .contact-panel .btn{background:var(--bg);color:var(--ink);border-color:var(--bg);white-space:nowrap}
-    footer{padding:28px 0 40px;display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:12px}
-    .modal{position:fixed;inset:0;background:rgba(10,20,16,.55);z-index:50;display:none;place-items:center;padding:20px}
-    .modal.open{display:grid}
-    .modal-card{background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:30px;max-width:600px;width:100%;max-height:85vh;overflow:auto;box-shadow:var(--shadow)}
-    .modal-top{display:flex;justify-content:space-between;align-items:center}
-    .modal-card h3{font:600 30px var(--serif);margin:14px 0}
-    .modal-card p{color:var(--muted)}
-    .close{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:50%;width:34px;height:34px;cursor:pointer}
-    .toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);opacity:0;background:var(--ink);color:var(--bg);padding:10px 15px;border-radius:7px;font-size:12px;z-index:70;transition:.25s;pointer-events:none}
-    .toast.show{opacity:1;transform:translate(-50%,0)}
-    @media(max-width:760px){
-      .wrap{width:min(100% - 36px,600px)}.navlinks{display:none;position:absolute;top:72px;left:0;right:0;background:var(--bg);padding:18px 24px 24px;border-bottom:1px solid var(--line);flex-direction:column;align-items:flex-start;gap:16px}
-      .navlinks.open{display:flex}.menu-btn{display:grid}.hero{padding:70px 0 54px;grid-template-columns:1fr;gap:34px}.hero-art{min-height:290px}
-      section.content{padding:66px 0}.section-head,.about-grid,.experience,.skills-layout,.recognition-list{grid-template-columns:1fr;gap:20px}
-      .section-head{margin-bottom:30px}.about-note{max-width:260px}.projects{grid-template-columns:1fr}.skill-groups,.recognition-items{grid-template-columns:1fr 1fr}
-      .contact-panel{padding:30px;display:block}.contact-panel .btn{margin-top:22px}
-    }
-    @media(max-width:440px){.skill-groups,.recognition-items{grid-template-columns:1fr}.hero-actions .btn{flex:1;justify-content:center}footer{display:block}footer span{display:block;margin-top:6px}}
-    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
-  </style>
-</head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f4f5f1">
+<meta name="description" content="Rathna Sri Balina — network reliability, service-provider engineering and applied machine learning.">
+<meta property="og:title" content="Rathna Sri Balina"><meta property="og:description" content="Finding the signals before systems fail.">
+<title>Rathna Sri Balina — Network reliability & automation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f5f1;--paper:#fbfcf9;--ink:#182522;--muted:#66736d;--line:#dce2dc;--accent:#176b61;--soft:#e4efeb;--warm:#c86e50;--serif:"Playfair Display",Georgia,serif;--sans:"DM Sans",sans-serif;--mono:"DM Mono",monospace}
+[data-theme=dark]{color-scheme:dark;--bg:#121a18;--paper:#192320;--ink:#edf2ed;--muted:#a2b0a8;--line:#30413a;--accent:#81c6b5;--soft:#213a33;--warm:#e39a7e}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:85px}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 var(--sans)}a{color:inherit;text-decoration:none}button{font:inherit}a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:4px}.wrap{width:min(1080px,calc(100% - 44px));margin:auto}.mono{font:11px var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}.nav{height:68px;display:flex;align-items:center;justify-content:space-between}.brand{font-weight:700;font-size:18px;letter-spacing:-.05em}.brand span{color:var(--accent)}.links{display:flex;gap:24px}.links a{font-size:12px;color:var(--muted)}.links a:hover{color:var(--accent)}.tools{display:flex;gap:8px}.tools button{width:36px;height:36px;border:1px solid var(--line);border-radius:50%;background:var(--paper);color:var(--ink);cursor:pointer}.menu{display:none}
+.hero{padding:94px 0 68px;display:grid;grid-template-columns:1.2fr .8fr;gap:50px;align-items:center}.eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:23px}.dot{width:7px;height:7px;border-radius:50%;background:#4e9a79;box-shadow:0 0 0 5px #4e9a7920}h1{font:600 clamp(52px,7vw,88px)/1 var(--serif);letter-spacing:-.055em;margin:0 0 25px}h1 em{font-style:normal;color:var(--accent)}.lead{font-size:17px;color:var(--muted);max-width:580px;margin:0}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}.btn{display:inline-block;padding:11px 16px;border:1px solid var(--line);border-radius:6px;font-size:12px;font-weight:700}.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}.visual{background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden}.visual-head,.visual-foot{padding:13px 16px;display:flex;justify-content:space-between}.visual-head{border-bottom:1px solid var(--line)}.visual-head span:last-child{color:var(--accent)}svg{display:block;width:100%;padding:14px}.gridline{stroke:var(--line);stroke-dasharray:3 6}.trace{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1000;stroke-dashoffset:1000;animation:draw 3s ease forwards}@keyframes draw{to{stroke-dashoffset:0}}.visual-foot{background:var(--soft);font:10px var(--mono);color:var(--muted)}
+.ticker{display:flex;gap:28px;overflow:auto;white-space:nowrap;padding:15px 0;border-block:1px solid var(--line)}.ticker span{font:10px var(--mono);color:var(--muted);text-transform:uppercase}.ticker b{color:var(--accent);font-weight:400}
+section{padding:74px 0;border-bottom:1px solid var(--line)}.heading{display:grid;grid-template-columns:190px 1fr;gap:32px;margin-bottom:32px}.heading .mono{color:var(--accent)}h2{font:600 clamp(32px,4vw,48px)/1.1 var(--serif);letter-spacing:-.04em;margin:0}.intro{color:var(--muted);max-width:660px;margin:10px 0 0}.split{display:grid;grid-template-columns:190px 1fr;gap:32px}.note{background:var(--soft);padding:20px;border-radius:9px;height:max-content}.note strong{font:600 29px var(--serif);color:var(--accent)}.note p,.prose p{color:var(--muted)}.prose{max-width:690px}.prose p{margin:0 0 14px}
+.timeline{border-left:1px solid var(--line);padding-left:25px}.role{position:relative;padding:0 0 25px}.role:last-child{padding:0}.role:before{content:"";position:absolute;left:-30px;top:8px;width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--bg)}.role h3{font-size:16px;margin:0}.meta{font:10px var(--mono);color:var(--accent);margin:4px 0 8px}.role p{font-size:14px;color:var(--muted);margin:0}
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}.filter{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:30px;padding:7px 13px;font-size:11px;cursor:pointer}.filter[aria-pressed=true]{background:var(--soft);color:var(--accent);border-color:var(--accent)}.projects{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.project{background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:21px;min-height:210px;display:flex;flex-direction:column;cursor:pointer;transition:.2s}.project:hover{transform:translateY(-3px);border-color:var(--accent)}.project h3{font:600 22px var(--serif);margin:14px 0 7px}.project p{font-size:13px;color:var(--muted);margin:0 0 16px}.tag{font:10px var(--mono);color:var(--accent);text-transform:uppercase}.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}.chip{font:9px var(--mono);border:1px solid var(--line);padding:4px 7px;border-radius:4px;color:var(--muted)}
+.skills,.awards{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.tile{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:18px}.tile h3{font-size:13px;margin:0 0 8px}.tile p{font-size:12px;color:var(--muted);margin:0}
+.contact{background:var(--ink);color:var(--bg);border-radius:10px;padding:36px;display:flex;justify-content:space-between;align-items:center;gap:24px}.contact p{color:var(--muted)}.contact .btn{background:var(--bg);color:var(--ink);white-space:nowrap}footer{padding:25px 0 38px;color:var(--muted);font-size:11px;display:flex;justify-content:space-between}
+.modal{position:fixed;inset:0;background:#08120e99;display:none;place-items:center;padding:20px;z-index:10}.modal.open{display:grid}.dialog{background:var(--paper);padding:25px;border-radius:10px;max-width:540px;width:100%}.dialog h3{font:600 27px var(--serif)}.dialog p{color:var(--muted)}.close{float:right;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:50%;width:30px;height:30px;cursor:pointer}
+@media(max-width:720px){.wrap{width:calc(100% - 34px)}.hero{grid-template-columns:1fr;padding:60px 0 45px;gap:25px}.links{display:none;position:absolute;top:68px;left:0;right:0;background:var(--bg);padding:18px;flex-direction:column;border-bottom:1px solid var(--line)}.links.open{display:flex}.menu{display:block!important;border-radius:8px!important}.heading,.split{grid-template-columns:1fr;gap:13px}section{padding:55px 0}.projects{grid-template-columns:1fr}.contact{display:block;padding:26px}.contact .btn{margin-top:10px}}
+@media(max-width:430px){.skills,.awards{grid-template-columns:1fr}footer{display:block}footer span{display:block;margin-top:5px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style></head>
 <body>
-  <header class="topbar">
-    <div class="wrap nav">
-      <a class="brand" href="#top">Sri<span>.</span></a>
-      <nav class="navlinks" id="navlinks" aria-label="Main navigation">
-        <a href="#about">About</a><a href="#experience">Experience</a><a href="#work">Selected work</a><a href="#skills">Expertise</a><a href="#recognition">Recognition</a><a href="#contact">Contact</a>
-      </nav>
-      <div class="navtools">
-        <button class="icon-btn" id="themeToggle" aria-label="Toggle color theme" title="Toggle theme">◐</button>
-        <button class="menu-btn" id="menuToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
-      </div>
-    </div>
-  </header>
-
-  <main id="top">
-    <div class="wrap">
-      <section class="hero" aria-labelledby="hero-title">
-        <div>
-          <div class="eyebrow mono"><span class="dot"></span> Network reliability · Automation · Applied ML</div>
-          <h1 id="hero-title">Finding the signals <em>before</em> systems fail.</h1>
-          <p class="hero-copy">I’m Rathna Sri Balina, a Technical Consulting Engineer II at Cisco working with service-provider networks. I’m interested in turning operational signals into earlier warnings—and making automation safe enough for critical infrastructure.</p>
-          <div class="hero-actions">
-            <a class="btn primary" href="#work">Explore my work <span aria-hidden="true">↗</span></a>
-            <a class="btn secondary" href="#contact">Get in touch</a>
-          </div>
-        </div>
-        <div class="hero-art" aria-label="Illustration of network telemetry signals">
-          <div class="art-head mono"><span>Signal / 001</span><span>LIVE TRACE — CONCEPT</span></div>
-          <svg class="signal-svg" viewBox="0 0 520 220" role="img" aria-label="A calm signal line developing into a spike">
-            <g class="signal-grid"><path d="M0 35H520M0 75H520M0 115H520M0 155H520M0 195H520"/><path d="M52 0V220M156 0V220M260 0V220M364 0V220M468 0V220"/></g>
-            <path class="signal-path" pathLength="1000" d="M0 115 L35 113 L58 117 L82 112 L110 116 L140 114 L166 116 L190 113 L215 115 L238 112 L260 119 L280 106 L300 122 L320 98 L340 130 L360 75 L380 165 L400 25 L420 182 L440 80 L460 130 L480 105 L500 116 L520 114"/>
-            <circle cx="360" cy="75" r="4" fill="var(--accent)"/><circle cx="400" cy="25" r="5" fill="var(--warm)"/>
-          </svg>
-          <div class="art-foot"><span>EARLY ANOMALY</span><span>→</span><span>SYSTEM EVENT</span></div>
-        </div>
-      </section>
-
-      <div class="ticker" aria-label="Areas of focus">
-        <span><b>01</b> Service provider networks</span><span><b>02</b> Network observability</span><span><b>03</b> Predictive systems</span><span><b>04</b> Safe automation</span>
-      </div>
-
-      <section class="content" id="about">
-        <div class="section-head"><div class="section-index mono">01 / About</div><div><h2>Engineering with context.</h2><p class="intro">I work at the intersection of complex networks, practical troubleshooting and the systems that can make operations more proactive.</p></div></div>
-        <div class="about-grid">
-          <aside class="about-note"><strong>From reactive<br>to predictive.</strong><p>A guiding idea across my engineering work and research.</p></aside>
-          <div class="prose">
-            <p>In network engineering, an outage is often the final visible moment of a much longer story. Small changes in telemetry, control-plane behavior and system health can reveal that story earlier—if we know how to look.</p>
-            <p>My day-to-day work involves investigating service-provider network issues, understanding failure behavior and helping drive issues toward resolution. That experience has shaped my interest in reliable automation, observability and AI-assisted operations.</p>
-            <p>My research interests include time-series prediction and applying machine learning to complex real-world signals, including seismic data and network telemetry.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="content" id="experience">
-        <div class="section-head"><div class="section-index mono">02 / Experience</div><div><h2>Working close to the network.</h2><p class="intro">A practical engineering perspective built through diagnosing and understanding service-provider systems.</p></div></div>
-        <div class="experience">
-          <div class="mono">Professional journey</div>
-          <div class="timeline">
-            <article class="role">
-              <h3>Technical Consulting Engineer II · Cisco</h3>
-              <div class="meta">SERVICE PROVIDER NETWORKS</div>
-              <p>Work on complex service-provider networking issues, investigating network behavior, reproducing problems and collaborating toward engineering resolutions. Focus areas include routing, control-plane behavior and network reliability.</p>
-            </article>
-            <article class="role">
-              <h3>Research & independent technical exploration</h3>
-              <div class="meta">TIME-SERIES · MACHINE LEARNING · AUTOMATION</div>
-              <p>Explore predictive approaches to real-world signals and the use of automation and AI to improve the reliability and safety of operational systems.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="content" id="work">
-        <div class="section-head"><div class="section-index mono">03 / Selected work</div><div><h2>Questions worth investigating.</h2><p class="intro">A selection of technical themes spanning prediction, network systems and automation. Project write-ups can be expanded as source links and artifacts are added.</p></div></div>
-        <div class="project-tools" role="group" aria-label="Filter projects">
-          <button class="filter" data-filter="all" aria-pressed="true">All work</button>
-          <button class="filter" data-filter="research" aria-pressed="false">Research</button>
-          <button class="filter" data-filter="network" aria-pressed="false">Networking</button>
-          <button class="filter" data-filter="automation" aria-pressed="false">Automation & AI</button>
-        </div>
-        <div class="projects">
-          <article class="project" data-category="research" data-title="Seismic time-series prediction" data-detail="Research direction: explore machine-learning approaches for identifying patterns in seismic time-series data, with the broader goal of understanding whether useful signals can be detected ahead of major events. Add the publication, dataset, model details and validated results before publishing a more specific claim.">
-            <div class="project-top"><span class="project-tag">Research / 01</span><span class="mono">↗</span></div>
-            <h3>Seismic time-series prediction</h3>
-            <p>Exploring machine learning for patterns in seismic signals and the challenge of turning noisy time-series data into useful indicators.</p>
-            <div class="chips"><span class="chip">Time series</span><span class="chip">Machine learning</span><span class="chip">Research</span></div>
-            <span class="more">Explore project details ↗</span>
-          </article>
-          <article class="project" data-category="network" data-title="Service-provider network reliability" data-detail="An engineering focus built around understanding complex service-provider network behavior: investigating symptoms, reproducing failure conditions, analyzing routing and control-plane behavior, and helping move issues toward resolution. Keep customer identifiers, internal tools and confidential operational details out of this public portfolio.">
-            <div class="project-top"><span class="project-tag">Networking / 02</span><span class="mono">↗</span></div>
-            <h3>Service-provider network reliability</h3>
-            <p>Investigating network behavior and failure modes across routing, control-plane and service-provider environments.</p>
-            <div class="chips"><span class="chip">BGP</span><span class="chip">IS-IS</span><span class="chip">MPLS</span><span class="chip">IOS XR</span></div>
-            <span class="more">Explore project details ↗</span>
-          </article>
-          <article class="project" data-category="automation" data-title="Safe network automation" data-detail="An exploration of automation patterns for critical infrastructure, with emphasis on validation, guardrails, observability and predictable behavior before changes are applied to production systems. Add a public demo or repository link when available.">
-            <div class="project-top"><span class="project-tag">Automation / 03</span><span class="mono">↗</span></div>
-            <h3>Safe network automation</h3>
-            <p>Exploring how validation and guardrails can make network automation more predictable in critical environments.</p>
-            <div class="chips"><span class="chip">Python</span><span class="chip">Automation</span><span class="chip">Reliability</span></div>
-            <span class="more">Explore project details ↗</span>
-          </article>
-          <article class="project" data-category="automation" data-title="AI-assisted network operations" data-detail="Exploring how AI agents and telemetry-aware workflows might support network operations without bypassing the checks required for safe infrastructure changes. A useful public case study should describe the architecture, human approval points and failure handling.">
-            <div class="project-top"><span class="project-tag">Applied AI / 04</span><span class="mono">↗</span></div>
-            <h3>AI-assisted network operations</h3>
-            <p>Investigating practical ways AI can support operational workflows while keeping human oversight and safety controls in place.</p>
-            <div class="chips"><span class="chip">AI agents</span><span class="chip">Telemetry</span><span class="chip">Human-in-the-loop</span></div>
-            <span class="more">Explore project details ↗</span>
-          </article>
-        </div>
-      </section>
-
-      <section class="content" id="skills">
-        <div class="section-head"><div class="section-index mono">04 / Expertise</div><div><h2>Tools are useful. Systems thinking matters more.</h2><p class="intro">A snapshot of the technical areas represented in my work.</p></div></div>
-        <div class="skills-layout">
-          <div class="mono">Technical map</div>
-          <div class="skill-groups">
-            <article class="skill-group"><h3>Routing & service provider</h3><p> BGP · IS-IS · MPLS · IOS XR · Routing fundamentals</p></article>
-            <article class="skill-group"><h3>Network operations</h3><p>Troubleshooting · Failure analysis · Control plane · Reliability</p></article>
-            <article class="skill-group"><h3>Automation & software</h3><p>Python · Scripting · Workflow automation · Validation</p></article>
-            <article class="skill-group"><h3>Data & intelligent systems</h3><p>Time-series analysis · Machine learning · Telemetry · AI agents</p></article>
-          </div>
-        </div>
-      </section>
-
-      <section class="content" id="recognition">
-        <div class="section-head"><div class="section-index mono">05 / Recognition</div><div><h2>Curiosity, put into practice.</h2><p class="intro">Recognition and participation across technical innovation and collaborative problem-solving.</p></div></div>
-        <div class="recognition-list">
-          <div class="mono">Highlights</div>
-          <div class="recognition-items">
-            <article class="recognition"><div class="mono">Innovation</div><h3>Cisco Ideathon</h3><p>Recognition for contributing ideas and exploring practical innovation.</p></article>
-            <article class="recognition"><div class="mono">Collaboration</div><h3>Hackathons</h3><p>Building and exploring solutions through collaborative technical challenges.</p></article>
-          </div>
-        </div>
-      </section>
-
-      <section class="content" id="contact">
-        <div class="contact-panel">
-          <div><div class="mono" style="color:#9dc8bb">06 / Contact</div><h2>Have an interesting system to solve?</h2><p>I’m always open to thoughtful conversations about networks, reliability, automation and applied research.</p></div>
-          <a class="btn" href="https://github.com/SriBalina" target="_blank" rel="noreferrer">Find me on GitHub ↗</a>
-        </div>
-      </section>
-      <footer><span>© <span id="year"></span> Rathna Sri Balina</span><span>Built around a simple idea: notice earlier, respond smarter.</span></footer>
-    </div>
-  </main>
-
-  <div class="modal" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal-card">
-      <div class="modal-top"><span class="mono" id="modalTag">Project details</span><button class="close" id="modalClose" aria-label="Close dialog">×</button></div>
-      <h3 id="modalTitle"></h3><p id="modalDetail"></p>
-      <p class="mono" style="margin-top:24px">Project links and supporting artifacts can be added here.</p>
-    </div>
-  </div>
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <script>
-    const root = document.documentElement;
-    const themeToggle = document.getElementById('themeToggle');
-    const storedTheme = localStorage.getItem('portfolio-theme');
-    if (storedTheme) root.dataset.theme = storedTheme;
-    themeToggle.addEventListener('click', () => {
-      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-      root.dataset.theme = next;
-      localStorage.setItem('portfolio-theme', next);
-      themeToggle.setAttribute('aria-label', next === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
-    });
-
-    const menuToggle = document.getElementById('menuToggle');
-    const navlinks = document.getElementById('navlinks');
-    menuToggle.addEventListener('click', () => {
-      const open = navlinks.classList.toggle('open');
-      menuToggle.setAttribute('aria-expanded', String(open));
-      menuToggle.textContent = open ? '×' : '☰';
-    });
-    navlinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      navlinks.classList.remove('open'); menuToggle.setAttribute('aria-expanded','false'); menuToggle.textContent='☰';
-    }));
-
-    const filters = document.querySelectorAll('.filter');
-    const projects = document.querySelectorAll('.project');
-    filters.forEach(button => button.addEventListener('click', () => {
-      filters.forEach(b => b.setAttribute('aria-pressed', String(b === button)));
-      projects.forEach(card => card.hidden = button.dataset.filter !== 'all' && card.dataset.category !== button.dataset.filter);
-    }));
-
-    const modal = document.getElementById('projectModal');
-    const closeModal = () => modal.classList.remove('open');
-    projects.forEach(card => card.addEventListener('click', () => {
-      document.getElementById('modalTitle').textContent = card.dataset.title;
-      document.getElementById('modalDetail').textContent = card.dataset.detail;
-      document.getElementById('modalTag').textContent = card.querySelector('.project-tag').textContent;
-      modal.classList.add('open');
-      document.getElementById('modalClose').focus();
-    }));
-    document.getElementById('modalClose').addEventListener('click', closeModal);
-    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-</body>
-</html>
-'''
-
-readme = """# Rathna Sri Balina — Portfolio
-
-A lightweight, responsive portfolio built with plain HTML, CSS and JavaScript for GitHub Pages.
-
-## Preview locally
-Open `index.html` in a browser, or run a local static server:
-
-```bash
-python -m http.server 8000
-```
-
-Then visit http://localhost:8000.
-
-## Deploy
-Copy the files into the root of `SriBalina.github.io` on the `main` branch. GitHub Pages will serve `index.html`.
-
-## Before publishing
-Review all project descriptions and add verified supporting links, dates, credentials and resume/contact details. Do not publish confidential customer names, internal tool names, or internal operational metrics. The current content intentionally avoids inventing project URLs, dates, or contact information.
-"""
-
-(root / "index.html").write_text(html, encoding="utf-8")
-(root / "README.md").write_text(readme, encoding="utf-8")
-zip_path = Path("/mnt/data/sri-balina-portfolio.zip")
-with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
-    z.write(root / "index.html", "index.html")
-    z.write(root / "README.md", "README.md")
-
-print("Created portfolio starter:")
-print(f"- {root / 'index.html'}")
-print(f"- {root / 'README.md'}")
-print(f"- {zip_path}")
+<header><div class="wrap nav"><a class="brand" href="#top">Sri<span>.</span></a><nav class="links" id="links"><a href="#about">About</a><a href="#experience">Experience</a><a href="#work">Work</a><a href="#skills">Expertise</a><a href="#recognition">Recognition</a><a href="#contact">Contact</a></nav><div class="tools"><button id="theme" aria-label="Toggle theme">◐</button><button class="menu" id="menu" aria-label="Open menu">☰</button></div></div></header>
+<main id="top"><div class="wrap">
+<div class="hero"><div><div class="eyebrow mono"><i class="dot"></i> Network reliability · Automation · Applied ML</div><h1>Finding the signals <em>before</em> systems fail.</h1><p class="lead">I’m Rathna Sri Balina, a Technical Consulting Engineer II at Cisco. I work with service-provider networks and am interested in predictive systems, reliable automation and applying machine learning to complex real-world signals.</p><div class="actions"><a class="btn primary" href="#work">Explore selected work ↗</a><a class="btn" href="#contact">Get in touch</a></div></div>
+<div class="visual"><div class="visual-head mono"><span>Signal / 001</span><span>EARLY ANOMALY</span></div><svg viewBox="0 0 500 190" role="img" aria-label="Network signal trace"><g class="gridline" fill="none"><path d="M0 35H500M0 75H500M0 115H500M0 155H500"/><path d="M100 0V190M200 0V190M300 0V190M400 0V190"/></g><path class="trace" d="M0 95L30 94L60 97L90 93L120 96L150 94L180 97L210 92L240 98L270 85L295 106L320 70L345 135L370 22L395 160L420 65L445 120L470 90L500 95"/></svg><div class="visual-foot"><span>OBSERVE</span><span>→</span><span>UNDERSTAND</span><span>→</span><span>ACT SAFELY</span></div></div></div>
+<div class="ticker"><span><b>01</b> Service provider networks</span><span><b>02</b> Network troubleshooting</span><span><b>03</b> Predictive research</span><span><b>04</b> Automation</span></div>
+<section id="about"><div class="heading"><div class="mono">01 / About</div><div><h2>Engineering with context.</h2><p class="intro">I work at the intersection of complex networks, practical troubleshooting and the systems that can make operations more proactive.</p></div></div><div class="split"><aside class="note"><strong>From reactive<br>to predictive.</strong><p>A guiding idea across my engineering work and research.</p></aside><div class="prose"><p>In network engineering, an outage is often the final visible moment of a much longer story. Small changes in telemetry, control-plane behavior and system health can reveal that story earlier—if we know how to look.</p><p>My work involves investigating service-provider network issues, reproducing faults in the lab and collaborating toward verified fixes. I’m also interested in applying machine learning to time-series data and making network automation safer and more predictable.</p></div></div></section>
+<section id="experience"><div class="heading"><div class="mono">02 / Experience</div><div><h2>Working close to the network.</h2><p class="intro">A practical engineering perspective shaped by real-world service-provider systems.</p></div></div><div class="split"><div class="mono">Professional journey</div><div class="timeline"><article class="role"><h3>Technical Consulting Engineer II · Cisco</h3><div class="meta">SERVICE PROVIDER TECHNICAL SUPPORT</div><p>Support global carriers on routers running IOS-XR. Investigate routing and platform behavior, reproduce faults in the lab, and collaborate with engineering teams on fixes. Build Python tooling for repetitive troubleshooting and incident response, mentor junior engineers and participate in early-career interviews.</p></article><article class="role"><h3>Cisco Intern</h3><div class="meta">CISCO IDEATHON · RADKIT</div><p>Joined Cisco after winning the national Cisco Ideathon with a hybrid wind-and-solar generator proposal focused on rural poverty. Contributed to the user interface of Cisco RADKit during the internship.</p></article><article class="role"><h3>B.Tech · Computer Science and Engineering</h3><div class="meta">VR SIDDHARTHA ENGINEERING COLLEGE · 2020–2024 · CGPA 9.69</div><p>Built a foundation in software engineering and applied computing, with projects across machine learning, IoT and immersive technology.</p></article></div></div></section>
+<section id="work"><div class="heading"><div class="mono">03 / Selected work</div><div><h2>Questions worth investigating.</h2><p class="intro">A selection of research and builds spanning prediction, connected devices, accessibility and interactive systems.</p></div></div><div class="filters" role="group" aria-label="Filter projects"><button class="filter" data-filter="all" aria-pressed="true">All work</button><button class="filter" data-filter="research" aria-pressed="false">Research</button><button class="filter" data-filter="iot" aria-pressed="false">IoT</button><button class="filter" data-filter="software" aria-pressed="false">Software & XR</button></div><div class="projects">
+<article class="project" data-category="research" data-title="Earthquake prediction" data-detail="Predicts earthquakes from seismic time-series data using gradient boosting and feature selection to investigate informative signals. Manuscript in preparation."><span class="tag">Research / 01</span><h3>Earthquake prediction</h3><p>Machine learning on seismic time-series data, using gradient boosting and feature selection to investigate informative signals.</p><div class="chips"><span class="chip">Python</span><span class="chip">pandas</span><span class="chip">scikit-learn</span></div></article>
+<article class="project" data-category="iot" data-title="IoT heart-rate monitor" data-detail="An Arduino Uno and pulse sensor send readings over Bluetooth to an Android app that tracks heart rate, supports medication reminders and alerts emergency contacts and doctors when readings become critical."><span class="tag">IoT / 02</span><h3>IoT heart-rate monitor</h3><p>A connected pulse-monitoring prototype with Bluetooth readings, an Android app, medication reminders and critical-reading alerts.</p><div class="chips"><span class="chip">Arduino</span><span class="chip">Bluetooth</span><span class="chip">Java</span></div></article>
+<article class="project" data-category="software" data-title="Sign language to text" data-detail="A hackathon project exploring translation of sign language into text."><span class="tag">Accessibility / 03</span><h3>Sign language to text</h3><p>A hackathon project exploring a bridge between sign-language gestures and readable text.</p><div class="chips"><span class="chip">Python</span><span class="chip">Hackathon</span></div></article>
+<article class="project" data-category="software" data-title="Pomodoro extension" data-detail="A browser extension that organizes tasks and focus time with the Pomodoro technique."><span class="tag">Productivity / 04</span><h3>Pomodoro extension</h3><p>A browser extension that organizes tasks and focus time around the Pomodoro technique.</p><div class="chips"><span class="chip">JavaScript</span><span class="chip">Browser extension</span></div></article>
+<article class="project" data-category="software" data-title="Oculus point game" data-detail="An interactive point-based game for Meta Oculus with joystick controls, built in an AR/VR lab. Related work includes AR marker, VR and HoloLens mixed-reality projects in Unity."><span class="tag">XR / 05</span><h3>Oculus point game</h3><p>An interactive point-based game, alongside AR, VR and HoloLens mixed-reality experiments.</p><div class="chips"><span class="chip">Unity</span><span class="chip">C#</span><span class="chip">Oculus</span></div></article>
+</div></section>
+<section id="skills"><div class="heading"><div class="mono">04 / Expertise</div><div><h2>Tools are useful. Systems thinking matters more.</h2><p class="intro">A snapshot of the technical areas represented in my professional work and projects.</p></div></div><div class="split"><div class="mono">Technical map</div><div class="skills"><article class="tile"><h3>Networking</h3><p>BGP · IS-IS · OSPF · MPLS · L3VPN · BFD · LACP · QoS · IOS-XR · IOS-XE</p></article><article class="tile"><h3>Programming & data</h3><p>Python · Java · C · C++ · JavaScript · SQL · scikit-learn · pandas · NumPy</p></article><article class="tile"><h3>Tools</h3><p>Linux · Git · Wireshark · Arduino · Android Studio · Unity</p></article><article class="tile"><h3>Engineering practice</h3><p>Troubleshooting · Root-cause analysis · Lab reproduction · Automation · Mentoring</p></article></div></div></section>
+<section id="recognition"><div class="heading"><div class="mono">05 / Recognition</div><div><h2>Curiosity, put into practice.</h2><p class="intro">Milestones across technical innovation, certification and collaborative problem-solving.</p></div></div><div class="split"><div class="mono">Highlights</div><div class="awards"><article class="tile"><h3>Global finalist · Cisco Tech for Social Good Hackathon (2026)</h3><p>Recognized among global finalists in a technology-for-good challenge.</p></article><article class="tile"><h3>Winner · National Cisco Ideathon</h3><p>Winning proposal for a hybrid wind-and-solar generator focused on rural poverty.</p></article><article class="tile"><h3>CCNP Service Provider & CCNA</h3><p>Professional networking certifications.</p></article><article class="tile"><h3>Best Mentor recognitions</h3><p>Mentoring early-career engineers and women engineering students preparing for interviews.</p></article><article class="tile"><h3>AWS Cloud Virtual Internship</h3><p>Eduskills · 2023.</p></article></div></div></section>
+<section id="contact"><div class="contact"><div><div class="mono" style="color:#9dc8bb">06 / Contact</div><h2>Have an interesting system to solve?</h2><p>Open to conversations about network reliability, automation and graduate research.</p></div><a class="btn" href="https://github.com/SriBalina" target="_blank" rel="noopener">Find me on GitHub ↗</a></div></section>
+<footer><span>© <span id="year"></span> Rathna Sri Balina</span><span>Notice earlier. Understand deeply. Respond smarter.</span></footer>
+</div></main>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="dialog"><button class="close" id="close" aria-label="Close dialog">×</button><div class="mono">Project details</div><h3 id="modalTitle"></h3><p id="modalText"></p></div></div>
+<script>
+const root=document.documentElement;const theme=document.getElementById('theme');const saved=localStorage.getItem('portfolio-theme');if(saved)root.dataset.theme=saved;theme.addEventListener('click',()=>{const t=root.dataset.theme==='dark'?'light':'dark';root.dataset.theme=t;localStorage.setItem('portfolio-theme',t)});
+const menu=document.getElementById('menu'),links=document.getElementById('links');menu.addEventListener('click',()=>links.classList.toggle('open'));links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('open')));
+const filters=document.querySelectorAll('.filter'),cards=document.querySelectorAll('.project');filters.forEach(b=>b.addEventListener('click',()=>{filters.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));cards.forEach(c=>c.hidden=b.dataset.filter!=='all'&&c.dataset.category!==b.dataset.filter)}));
+const modal=document.getElementById('modal');cards.forEach(c=>{c.tabIndex=0;c.setAttribute('role','button');c.addEventListener('click',()=>{document.getElementById('modalTitle').textContent=c.dataset.title;document.getElementById('modalText').textContent=c.dataset.detail;modal.classList.add('open');document.getElementById('close').focus()});c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();c.click()}})});const close=()=>modal.classList.remove('open');document.getElementById('close').addEventListener('click',close);modal.addEventListener('click',e=>{if(e.target===modal)close()});document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});document.getElementById('year').textContent=new Date().getFullYear();
+</script></body></html>
