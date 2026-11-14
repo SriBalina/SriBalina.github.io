@@ -38,12 +38,69 @@ section{padding:74px 0;border-bottom:1px solid var(--line)}.heading{display:grid
 .project[hidden]{display:none}
 @media(max-width:720px){.paper-canvas{height:160px}.paper-caption{align-items:flex-start;flex-wrap:wrap}}
 
+
+/* UI refinement: tighter first-screen composition, clearer hierarchy, responsive grids */
+:root{--bg:#f6f7f3;--paper:#ffffff;--ink:#17231f;--muted:#64716b;--line:#e1e7e1;--accent:#176b61;--soft:#edf4f0;--warm:#bd694d}
+[data-theme=dark]{--bg:#101715;--paper:#17211d;--ink:#edf4ef;--muted:#a3b2aa;--line:#2c3b34;--accent:#8bcbb8;--soft:#20342c;--warm:#e39a7e}
+html{scroll-padding-top:82px}
+body{background-image:radial-gradient(ellipse at 80% 5%,color-mix(in srgb,var(--accent) 7%,transparent),transparent 34rem)}
+.wrap{width:min(1160px,calc(100% - 64px))}
+.nav{height:72px}.brand{font-size:20px}.links{gap:27px}.links a{font-size:12px;font-weight:600;transition:color .2s}
+.hero{min-height:min(760px,calc(100svh - 72px));padding:clamp(42px,7vh,76px) 0;grid-template-columns:minmax(0,1.12fr) minmax(340px,.88fr);gap:clamp(28px,5vw,70px)}
+.eyebrow{font-size:10px;letter-spacing:.12em;margin-bottom:25px}
+h1{font-size:clamp(48px,5.6vw,76px);line-height:1.04;max-width:690px;margin-bottom:22px}
+.lead{font-size:clamp(15px,1.45vw,17px);line-height:1.8;max-width:550px}
+.actions{gap:12px;margin-top:30px}.btn{padding:12px 17px;border-radius:5px;transition:transform .2s,border-color .2s,background .2s}.btn:hover{transform:translateY(-2px);border-color:var(--accent)}.primary:hover{background:var(--accent);color:#fff}
+.visual{box-shadow:0 20px 60px #17231f0c;border-radius:14px}.visual-head,.visual-foot{padding:15px 18px}.visual-head span:last-child{font-size:9px;letter-spacing:.12em}.network-canvas{height:clamp(220px,28vw,300px)}
+.ticker{gap:clamp(18px,4vw,46px);padding:17px 0}.ticker span{font-size:10px;letter-spacing:.06em}
+section{padding:clamp(58px,7vw,88px) 0}
+.heading{grid-template-columns:155px minmax(0,1fr);gap:clamp(22px,4vw,48px);margin-bottom:35px}
+.heading>.mono{padding-top:8px;font-size:10px;letter-spacing:.12em}
+h2{font-size:clamp(31px,3.5vw,46px);line-height:1.13}
+.intro{font-size:14px;line-height:1.8;max-width:700px;margin-top:13px}
+.split{grid-template-columns:155px minmax(0,1fr);gap:clamp(22px,4vw,48px)}
+.note{border:1px solid color-mix(in srgb,var(--accent) 12%,var(--line));padding:24px;border-radius:10px}
+.prose{max-width:740px}.prose p{font-size:15px;line-height:1.9}
+.timeline{padding-left:28px}.role{padding-bottom:30px}.role h3{font-size:17px}.role p{font-size:14px;line-height:1.8}
+.projects{grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.project{min-height:260px;padding:22px;border-radius:10px;cursor:pointer;box-shadow:0 4px 20px #17231f05}
+.project h3{font-size:21px;line-height:1.2;margin:17px 0 10px}.project p{font-size:13px;line-height:1.75}
+.project:hover{box-shadow:0 12px 30px #17231f0d;transform:translateY(-4px)}
+.research-status{font-size:8px;letter-spacing:.04em;align-self:flex-start;margin-top:2px}
+.skills,.awards{grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.tile{padding:20px;border-radius:9px;transition:border-color .2s,transform .2s}.tile:hover{border-color:color-mix(in srgb,var(--accent) 55%,var(--line));transform:translateY(-2px)}
+.tile h3{font-size:13px;letter-spacing:.01em}.tile p{font-size:12px;line-height:1.8}
+.paper-lab{padding-top:48px;padding-bottom:60px;border-bottom:1px solid var(--line)}
+.paper-lab .heading{margin-bottom:22px}.paper-stage{border-radius:12px;box-shadow:0 10px 35px #17231f08}
+.paper-canvas{height:205px}.paper-caption{padding:14px 18px}
+.contact{padding:clamp(26px,4vw,44px);border-radius:12px;background:linear-gradient(120deg,var(--ink),color-mix(in srgb,var(--ink) 84%,var(--accent)));gap:28px}
+.contact h2{max-width:600px}.contact p{font-size:14px;line-height:1.8}.contact .btn{margin-right:4px}
+footer{padding:27px 0 40px;font-size:11px}
+@media(min-width:721px) and (max-height:760px){.hero{min-height:calc(100svh - 72px);padding:34px 0}.network-canvas{height:205px}h1{font-size:clamp(46px,5vw,66px)}}
+@media(max-width:980px){.wrap{width:calc(100% - 48px)}.hero{grid-template-columns:minmax(0,1fr) minmax(280px,.85fr);gap:28px}.projects{grid-template-columns:repeat(2,minmax(0,1fr))}.skills,.awards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){
+ .wrap{width:calc(100% - 36px)}.nav{height:64px}.hero{min-height:auto;grid-template-columns:1fr;padding:52px 0 40px;gap:28px}
+ h1{font-size:clamp(46px,12vw,64px);max-width:600px}.lead{font-size:15px}
+ .visual{max-width:100%}.network-canvas{height:190px}
+ .heading,.split{grid-template-columns:1fr;gap:12px}.heading>.mono{padding:0}
+ section{padding:56px 0}.paper-lab{padding-top:36px;padding-bottom:46px}
+ .projects{grid-template-columns:1fr}.project{min-height:0;padding:20px}
+ .skills,.awards{grid-template-columns:1fr 1fr}.contact{padding:25px}
+}
+@media(max-width:440px){
+ .wrap{width:calc(100% - 30px)}.actions .btn{font-size:11px;padding:11px 13px}
+ .skills,.awards{grid-template-columns:1fr}.paper-canvas{height:160px}
+ .paper-caption{display:grid;grid-template-columns:1fr;gap:10px}.paper-caption button{margin-right:5px}
+ footer{line-height:1.8}
+}
+@media(prefers-reduced-motion:reduce){.project:hover,.tile:hover,.btn:hover{transform:none}}
+
 </style></head>
 <body>
 <header><div class="wrap nav"><a class="brand" href="#top">Sri<span>.</span></a><nav class="links" id="links"><a href="#about">About</a><a href="#experience">Experience</a><a href="#work">Work</a><a href="#skills">Expertise</a><a href="#recognition">Recognition</a><a href="#contact">Contact</a></nav><div class="tools"><button id="theme" aria-label="Toggle theme">◐</button><button class="menu" id="menu" aria-label="Open menu">☰</button></div></div></header>
 <main id="top"><div class="wrap">
 <div class="hero"><div><div class="eyebrow mono"><i class="dot"></i> Network reliability · Automation · Applied ML</div><h1>Finding the signals <em>before</em> systems fail.</h1><p class="lead">I’m Rathna Sri Balina, a Technical Consulting Engineer II at Cisco. I work with service-provider networks and am interested in predictive systems, reliable automation and applying machine learning to complex real-world signals.</p><div class="actions"><a class="btn primary" href="#work">Explore selected work ↗</a><a class="btn" href="#contact">Get in touch</a></div></div>
-<div class="visual"><div class="visual-head mono"><span>Network / 001</span><span>LIVE TOPOLOGY</span></div><canvas id="networkCanvas" class="paper-canvas network-canvas" aria-label="Animated network topology. Move your pointer to perturb the signal."></canvas><div class="visual-foot"><span>ROUTER NODES</span><span>·</span><span>CONTROL PLANE</span><span>·</span><span>TELEMETRY</span></div></div></div>
+<div class="visual"><div class="visual-head mono"><span>Network / 001</span><span>SIMULATED NETWORK</span></div><canvas id="networkCanvas" class="paper-canvas network-canvas" aria-label="Animated network topology. Move your pointer to explore the simulated topology."></canvas><div class="visual-foot"><span>ROUTER NODES</span><span>·</span><span>CONTROL PLANE</span><span>·</span><span>TELEMETRY</span></div></div></div>
 <div class="ticker"><span><b>01</b> Service provider networks</span><span><b>02</b> Network troubleshooting</span><span><b>03</b> Predictive research</span><span><b>04</b> Automation</span></div>
 <section class="paper-lab" id="signal-lab"><div class="heading"><div class="mono">Signal lab / Interactive</div><div><h2>Two kinds of signals. One instinct: look closer.</h2><p class="intro">A small interactive sketch inspired by network telemetry and seismic waveforms. Trigger a synthetic event and watch how a signal propagates. This is an illustration, not live network or earthquake data.</p></div></div><div class="paper-stage"><canvas id="seismicCanvas" class="paper-canvas" aria-label="Animated synthetic seismic waveform. Activate the trigger button to create a simulated tremor."></canvas><div class="paper-caption"><span id="signalReadout">SIGNAL: BASELINE · SYNTHETIC DEMO</span><span><button id="triggerWave" type="button">Trigger a tremor ↗</button> <button id="pauseWave" type="button">Pause animation</button></span></div></div></section>
 <section id="about"><div class="heading"><div class="mono">01 / About</div><div><h2>Engineering with context.</h2><p class="intro">I work at the intersection of complex networks, practical troubleshooting and the systems that can make operations more proactive.</p></div></div><div class="split"><aside class="note"><strong>From reactive<br>to predictive.</strong><p>A guiding idea across my engineering work and research.</p></aside><div class="prose"><p>In network engineering, an outage is often the final visible moment of a much longer story. Small changes in telemetry, control-plane behavior and system health can reveal that story earlier—if we know how to look.</p><p>My work involves investigating service-provider network issues, reproducing faults in the lab and collaborating toward verified fixes. I’m also interested in applying machine learning to time-series data and making network automation safer and more predictable.</p></div></div></section>
