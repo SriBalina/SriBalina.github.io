@@ -69,12 +69,31 @@ h2{color:#2d2a24}h2 em{color:#e77718}
 footer{color:#81786b}
 @media(max-width:620px){.hero{padding-top:64px}.photo-slot{width:min(70%,260px);margin:34px auto 0}.hero-copy{position:relative;z-index:2}}
 
+
+:root[data-theme="dark"] body{background:#111318;color:#f4eee4}
+:root[data-theme="dark"] .world-vignette{background:radial-gradient(ellipse at 77% 48%,rgba(255,132,0,.13),transparent 42%),linear-gradient(90deg,rgba(17,19,24,.98) 0%,rgba(17,19,24,.91) 37%,rgba(17,19,24,.28) 100%),linear-gradient(0deg,rgba(17,19,24,.94),transparent 48%,rgba(17,19,24,.4))}
+:root[data-theme="dark"] header,:root[data-theme="dark"] section.content{border-color:rgba(244,238,228,.14)}
+:root[data-theme="dark"] .brand,:root[data-theme="dark"] h1,:root[data-theme="dark"] h2,:root[data-theme="dark"] .intro strong,:root[data-theme="dark"] .meta b,:root[data-theme="dark"] .contact-panel strong{color:#f4eee4}
+:root[data-theme="dark"] nav a,:root[data-theme="dark"] .intro,:root[data-theme="dark"] .lede,:root[data-theme="dark"] .tile p,:root[data-theme="dark"] .project p,:root[data-theme="dark"] .timeline-item p,:root[data-theme="dark"] .contact-panel p,:root[data-theme="dark"] .socials a{color:#b8b0a4}
+:root[data-theme="dark"] nav .contact-link,:root[data-theme="dark"] .theme-toggle,:root[data-theme="dark"] .btn{border-color:rgba(244,238,228,.3);color:#f4eee4}
+:root[data-theme="dark"] .btn.primary{background:#ff8400;border-color:#ff8400;color:#fffaf2}
+:root[data-theme="dark"] .photo-slot{background:radial-gradient(circle at 50% 38%,#493b30 0%,#30251f 58%,#201c1b 100%);box-shadow:0 25px 80px rgba(0,0,0,.35)}
+:root[data-theme="dark"] .photo-inner{background:rgba(17,19,24,.58);border-color:rgba(244,238,228,.2)}
+:root[data-theme="dark"] .photo-inner small,:root[data-theme="dark"] .photo-caption{color:#d6c8b5}
+:root[data-theme="dark"] .scroll-hint,:root[data-theme="dark"] .meta,:root[data-theme="dark"] footer{color:#9c9488}
+:root[data-theme="dark"] .tile,:root[data-theme="dark"] .contact-panel{background:rgba(31,33,39,.82);border-color:rgba(244,238,228,.13)}
+:root[data-theme="dark"] .project{border-color:rgba(244,238,228,.14)}
+:root[data-theme="dark"] .tag,:root[data-theme="dark"] .skill{background:rgba(31,33,39,.7);border-color:rgba(244,238,228,.17);color:#d1c8bc}
+:root[data-theme="dark"] .timeline-item:before{box-shadow:0 0 0 5px #111318}
+:root[data-theme="dark"] .socials a{border-color:rgba(244,238,228,.2)}
+@media(max-width:620px){.theme-toggle{padding:8px 10px}}
+
 </style>
 </head>
 <body>
 <canvas id="world" aria-hidden="true"></canvas><div class="world-vignette"></div>
 <div class="site">
-<header class="wrap"><a class="brand" href="#home">rathna<span>.</span></a><nav aria-label="Main navigation"><a href="#about">About</a><a href="#work">Work</a><a href="#journey">Journey</a><a href="#contact" class="contact-link">LET'S CONNECT ↗</a></nav></header>
+<header class="wrap"><a class="brand" href="#home">rathna<span>.</span></a><nav aria-label="Main navigation"><a href="#about">About</a><a href="#work">Work</a><a href="#journey">Journey</a><a href="#contact" class="contact-link">LET'S CONNECT ↗</a><button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode">☾ DARK</button></nav></header>
 <main>
 <section class="wrap hero" id="home" data-scene="iot"><div class="hero-copy">
 <div class="eyebrow mono">HELLO! I’M A NETWORK ENGINEER · CISCO</div><h1>Hi, I’m Rathna<span>the network fixer.</span></h1>
@@ -190,5 +209,11 @@ gsap.utils.toArray('.reveal').forEach(el=>gsap.fromTo(el,{autoAlpha:0,y:28},{aut
 gsap.from('.hero-copy > *',{y:22,autoAlpha:0,duration:.9,stagger:.09,ease:'power3.out',delay:.15});
 }catch(error){console.warn('3D scene could not initialize; the portfolio content remains available.',error);canvas.style.display='none'}
 document.querySelector('#year').textContent=new Date().getFullYear();
+const themeButton=document.querySelector('#themeToggle');
+const savedTheme=localStorage.getItem('portfolio-theme');
+if(savedTheme==='dark')document.documentElement.dataset.theme='dark';
+function syncThemeButton(){const dark=document.documentElement.dataset.theme==='dark';themeButton.textContent=dark?'☀ LIGHT':'☾ DARK';themeButton.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode');document.querySelector('meta[name="theme-color"]').content=dark?'#111318':'#f5efe6'}
+syncThemeButton();
+themeButton.addEventListener('click',()=>{const dark=document.documentElement.dataset.theme==='dark';if(dark)delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme='dark';localStorage.setItem('portfolio-theme',dark?'light':'dark');syncThemeButton()});
 </script>
 </body></html>
