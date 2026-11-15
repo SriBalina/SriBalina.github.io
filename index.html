@@ -101,7 +101,7 @@ function opacityGroup(group,weight){group.visible=weight>.008;group.traverse(o=>
 function smooth(a,b,x){let t=THREE.MathUtils.clamp((x-a)/(b-a),0,1);return t*t*(3-2*t)}
 const seismicEl=document.querySelector('#seismic'),networkEl=document.querySelector('#networking');
 function render(){
-raf=requestAnimationFrame(render);const time=clock.getElapsedTime();let sy=window.scrollY;
+if(!reduced)raf=requestAnimationFrame(render);const time=clock.getElapsedTime();let sy=window.scrollY;
 let sTop=seismicEl.getBoundingClientRect().top+sy,nTop=networkEl.getBoundingClientRect().top+sy;
 let y=sy+innerHeight*.45,trans1=smooth(sTop-innerHeight*.65,sTop+innerHeight*.45,y),trans2=smooth(nTop-innerHeight*.65,nTop+innerHeight*.45,y);
 let wiot=1-trans1,wseq=trans1*(1-trans2),wnet=trans2;
@@ -113,12 +113,11 @@ for(let i=0;i<pulses.length;i++){let q=(time*.24+i/pulses.length)%1,p=sensors[i]
 const arr=waveGeo.attributes.position.array;for(let i=0;i<waveCount;i++){let x=(i/(waveCount-1)-.5)*10;let envelope=.18+Math.pow(Math.max(0,Math.sin(i*.012-time*.3)),5)*.85;let amp=(Math.sin(i*.12-time*2)*.13+Math.sin(i*.035-time*.7)*.16)*envelope;let spike=Math.pow(Math.max(0,Math.sin(i*.023-time*.17)),18)*Math.sin(i*.29-time*2)*.7;arr[i*3]=x;arr[i*3+1]=amp+spike;arr[i*3+2]=.15+Math.sin(i*.018)*.12}waveGeo.attributes.position.needsUpdate=true;
 quakeDot.scale.setScalar(.8+Math.sin(time*3)*.18);
 packets.forEach((p,i)=>{let edge=netLines[i%netLines.length],q=(time*.18+i/packets.length)%1;p.position.lerpVectors(edge.a,edge.b,q)});
-camera.position.x+=(mouseX*.48-camera.position.x)*.025;camera.position.y+=(-mouseY*.3-camera.position.y)*.025;camera.lookAt(0,0,0);
-if(reduced){cancelAnimationFrame(raf)}
+camera.position.x+=(mouseX*.48-camera.position.x)*.025;camera.position.y+=(-mouseY*.3-camera.position.y)*.025;camera.lookAt(0,0,0);renderer.render(scene,camera);
 }
 function resize(){if(!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setPixelRatio(Math.min(devicePixelRatio,innerWidth<650?1.15:1.6));renderer.setSize(innerWidth,innerHeight)}
 addEventListener('resize',resize,{passive:true});addEventListener('pointermove',e=>{mouseX=(e.clientX/innerWidth-.5)*2;mouseY=(e.clientY/innerHeight-.5)*2},{passive:true});
-if(reduced){clock=new THREE.Clock(false);render()}else render();
+if(reduced){clock=new THREE.Clock(false);addEventListener('scroll',render,{passive:true});render()}else render();
 gsap.utils.toArray('.reveal').forEach(el=>gsap.fromTo(el,{autoAlpha:0,y:28},{autoAlpha:1,y:0,duration:.85,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 86%',once:true}}));
 gsap.from('.hero-copy > *',{y:22,autoAlpha:0,duration:.9,stagger:.09,ease:'power3.out',delay:.15});
 }catch(error){console.warn('3D scene could not initialize; the portfolio content remains available.',error);canvas.style.display='none'}
