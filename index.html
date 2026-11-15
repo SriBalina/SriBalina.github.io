@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090d19">
-<meta name="description" content="Rathna Sri Balina — technical consulting engineer exploring IoT, seismic prediction and network automation.">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5efe6">
+<meta name="description" content="Rathna Sri Balina — network engineer, curious builder, and troubleshooting enthusiast.">
 <title>Rathna Sri Balina — Engineer & curious builder</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Urbanist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#090d19;--panel:#10182a;--ink:#f1f0ec;--muted:#a4aec1;--line:rgba(207,220,255,.15);--cyan:#78d6d0;--violet:#a99aff;--coral:#ff967b;--acid:#d5e88c;--display:"Manrope",sans-serif;--sans:"DM Sans",sans-serif;--mono:"DM Mono",monospace}
+:root{--bg:#f5efe6;--panel:#fffaf2;--ink:#2d2a24;--muted:#756f65;--line:rgba(45,42,36,.16);--cyan:#ff8400;--violet:#c5a6e8;--coral:#ef795b;--acid:#d9dfad;--display:"Urbanist",sans-serif;--sans:"DM Sans",sans-serif;--mono:"DM Mono",monospace}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 var(--sans);-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}a:focus-visible{outline:2px solid var(--cyan);outline-offset:4px}
 #world{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none}
 .world-vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(9,13,25,.96) 0%,rgba(9,13,25,.8) 40%,rgba(9,13,25,.2) 100%),linear-gradient(0deg,rgba(9,13,25,.82),transparent 42%,rgba(9,13,25,.4))}
@@ -31,6 +31,44 @@ footer{padding:27px 0 35px;display:flex;justify-content:space-between;gap:16px;c
 @media(max-width:900px){.wrap{width:calc(100% - 48px)}.photo-slot{right:0;width:29vw;opacity:.85}.hero-copy{max-width:75%}.section-grid{grid-template-columns:1fr;gap:16px}.section-index{padding:0}}
 @media(max-width:620px){.wrap{width:calc(100% - 36px)}header{height:70px}nav{gap:13px}nav a{font-size:10px}nav .contact-link{display:none}.hero{min-height:auto;padding:76px 0 95px;display:block}.hero-copy{max-width:100%}h1{font-size:clamp(61px,15vw,92px)}.photo-slot{position:relative;top:auto;right:auto;transform:none;width:min(62%,235px);margin:45px 0 0 4px;aspect-ratio:1;border-radius:50%;opacity:1}.photo-inner strong{font-size:55px}.scroll-hint{bottom:25px}section.content{padding:85px 0;min-height:auto}.tiles{grid-template-columns:1fr}.project{grid-template-columns:34px 1fr;gap:12px}.project-link{grid-column:2}.contact-panel{display:block;padding:25px}.contact-panel .btn{margin-top:20px}footer{display:block;line-height:2.5}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none}*,*:before,*:after{transition:none!important;animation:none!important}}
+
+/* Warm, playful portfolio art direction */
+body{background:#f5efe6;color:#2d2a24}
+#world{z-index:0}
+.world-vignette{background:radial-gradient(ellipse at 77% 48%,rgba(255,132,0,.10),transparent 42%),linear-gradient(90deg,rgba(245,239,230,.98) 0%,rgba(245,239,230,.93) 37%,rgba(245,239,230,.23) 100%),linear-gradient(0deg,rgba(245,239,230,.92),transparent 48%,rgba(245,239,230,.35))}
+header{border-color:rgba(45,42,36,.14)}
+.brand{color:#2d2a24}.brand span{color:#ff8400}
+nav a{color:#655f55}nav a:hover{color:#ff8400}nav .contact-link{border-color:rgba(45,42,36,.3)}
+.mono,.section-index{color:#b65c08}
+.eyebrow:before{background:#ff8400}
+h1{color:#2d2a24;font-size:clamp(58px,9.2vw,122px);letter-spacing:-.085em}
+h1 span{color:#ff8400}
+.intro{color:#655f55}.intro strong{color:#2d2a24}
+.btn{border-color:rgba(45,42,36,.3);color:#2d2a24;border-radius:999px;padding:14px 21px}
+.btn.primary{background:#ff8400;border-color:#ff8400;color:#fffaf2}
+.btn:hover{border-color:#ff8400;color:#b65c08}.btn.primary:hover{background:#2d2a24;color:#fffaf2}
+.meta{color:#81786b}.meta b{color:#2d2a24}
+.photo-slot{border:0;border-radius:44% 44% 24px 24px;background:radial-gradient(circle at 50% 38%,#fff8ed 0%,#f5d8b5 58%,#e9c49b 100%);box-shadow:0 25px 80px rgba(121,76,28,.13)}
+.photo-slot:before{border-color:rgba(255,132,0,.24)}.photo-slot:after{border-color:rgba(197,166,232,.38)}
+.photo-inner{background:rgba(255,250,242,.66);border-color:rgba(45,42,36,.2)}
+.photo-inner strong{color:#ff8400}.photo-inner small,.photo-caption{color:#675d50}
+.scroll-hint{color:#81786b}.scroll-hint:before{background:#ff8400}
+section.content{border-color:rgba(45,42,36,.14)}
+h2{color:#2d2a24}h2 em{color:#e77718}
+.lede{color:#655f55}
+.tile,.contact-panel{background:rgba(255,250,242,.78);border-color:rgba(45,42,36,.13);backdrop-filter:blur(12px);border-radius:22px}
+.tile small,.project-type{color:#b65c08}
+.tile p,.project p,.timeline-item p{color:#71695e}
+.project{border-color:rgba(45,42,36,.14)}
+.project-no{color:#e77718}.project-link{color:#b65c08}.project-link:hover{color:#e77718}
+.tag{border-color:rgba(45,42,36,.17);color:#71695e;border-radius:999px}
+.timeline{border-color:rgba(255,132,0,.5)}.timeline-item:before{background:#ff8400;box-shadow:0 0 0 5px #f5efe6}.timeline-item .meta-line{color:#b65c08}
+.skill{background:rgba(255,250,242,.8);border-color:rgba(45,42,36,.14);color:#514b42;border-radius:999px}.skill:before{color:#ff8400}
+.contact-panel strong{color:#2d2a24}.contact-panel p{color:#71695e}
+.socials a{color:#655f55;border-color:rgba(45,42,36,.2)}.socials a:hover{color:#b65c08;border-color:#ff8400}
+footer{color:#81786b}
+@media(max-width:620px){.hero{padding-top:64px}.photo-slot{width:min(70%,260px);margin:34px auto 0}.hero-copy{position:relative;z-index:2}}
+
 </style>
 </head>
 <body>
@@ -39,11 +77,11 @@ footer{padding:27px 0 35px;display:flex;justify-content:space-between;gap:16px;c
 <header class="wrap"><a class="brand" href="#home">rathna<span>.</span></a><nav aria-label="Main navigation"><a href="#about">About</a><a href="#work">Work</a><a href="#journey">Journey</a><a href="#contact" class="contact-link">LET'S CONNECT ↗</a></nav></header>
 <main>
 <section class="wrap hero" id="home" data-scene="iot"><div class="hero-copy">
-<div class="eyebrow mono">TECHNICAL CONSULTING ENGINEER II · CISCO</div><h1>Rathna Sri<span>Balina.</span></h1>
-<p class="intro">I work with networks, build with curiosity, and explore how <strong>technology can make a meaningful difference</strong> — from connected devices to predictive systems.</p>
+<div class="eyebrow mono">HELLO! I’M A NETWORK ENGINEER · CISCO</div><h1>Hi, I’m Rathna<span>the network fixer.</span></h1>
+<p class="intro">I untangle network mysteries, build curious little things, and explore how <strong>technology can make a meaningful difference</strong> — from connected devices to predictive systems.</p>
 <div class="actions"><a class="btn primary" href="#work">EXPLORE MY WORK ↘</a><a class="btn" href="mailto:balinarathnasri@gmail.com">SAY HELLO ↗</a></div>
 <div class="hero-meta"><div class="meta">WORKING IN<b>Service-provider networks</b></div><div class="meta">EXPLORING<b>Automation · Python</b></div><div class="meta">BASED IN<b>India</b></div></div></div>
-<div class="photo-slot" role="img" aria-label="Placeholder for profile photo"><div class="photo-inner"><strong>RS</strong><small>YOUR PHOTO HERE</small></div><div class="photo-caption">A little more about me</div></div>
+<div class="photo-slot" role="img" aria-label="A stylized 3D girl troubleshooting a network at her desk"><div class="photo-inner"><strong>✳</strong><small>PACKET DETECTIVE</small></div><div class="photo-caption">one packet at a time</div></div>
 <div class="scroll-hint">SCROLL TO EXPLORE</div></section>
 <section class="content" id="about" data-scene="iot"><div class="wrap section-grid"><div class="section-index mono">01 / ABOUT</div><div class="section-main reveal"><h2>Curiosity is where<br><em>everything connects.</em></h2><p class="lede">I’m a Technical Consulting Engineer II at Cisco, working with service-provider networks and IOS-XR. I enjoy understanding complex systems, troubleshooting tricky behaviour, and finding ways to make everyday engineering work smoother. My interests stretch from connected devices and research to automation and intelligent systems.</p><div class="tiles"><article class="tile"><small>MY ENGINEERING SIDE</small><p>Routing and service-provider technologies, fault investigation, lab reproduction, platform behaviour, and collaborative problem-solving.</p></article><article class="tile"><small>MY EXPLORATION SIDE</small><p>Python automation, applied machine learning, predictive systems, IoT, and turning research ideas into practical prototypes.</p></article></div></div></div></section>
 <section class="content" id="work" data-scene="iot"><div class="wrap section-grid"><div class="section-index mono">02 / IOT & CONNECTED DEVICES</div><div class="section-main reveal"><h2>First, we learned<br>to make things <em>talk.</em></h2><p class="lede">A small sensor can tell a bigger story. This is where the journey begins: devices, signals, and the idea of turning real-world measurements into useful information.</p><div class="project-list">
@@ -87,6 +125,36 @@ const coreEdges=new THREE.LineSegments(new THREE.EdgesGeometry(core.geometry),ne
 for(let i=0;i<4;i++)for(let j=0;j<3;j++){let pin=new THREE.Mesh(new THREE.BoxGeometry(.09,.09,.1),makeMat(cyan,cyan,.9));pin.position.set(-.78+i*.52,-.58+j*.56,.24);iot.add(pin)}
 const ringMat=new THREE.MeshBasicMaterial({color:violet,transparent:true,opacity:.55,wireframe:true});
 for(let i=0;i<3;i++){let ring=new THREE.Mesh(new THREE.TorusGeometry(2.1+i*.42,.008,6,120),ringMat.clone());ring.rotation.x=Math.PI/2.5+i*.2;ring.rotation.y=i*.5;iot.add(ring)}
+
+// A tiny network engineer, built from friendly 3D shapes.
+const avatar=new THREE.Group();root.add(avatar);avatar.position.set(0,-.2,.45);
+const skin=makeMat(0xf0bd91,0x9a5e3e),hair=makeMat(0x49302a,0x241714),shirt=makeMat(0xff8a24,0xa94a08),pants=makeMat(0x596b83,0x27374a),shoe=makeMat(0x2d2a24,0x15120f),deskMat=makeMat(0xe7b77f,0x9d6730),screenMat=makeMat(0x263c49,0x78d6d0);
+function part(g,geo,mat,x,y,z,rx=0,ry=0,rz=0){const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);m.rotation.set(rx,ry,rz);g.add(m);return m}
+part(avatar,new THREE.SphereGeometry(.48,24,18),skin,0,.98,.15);
+part(avatar,new THREE.SphereGeometry(.5,24,18,0,Math.PI*2,0,Math.PI*.68),hair,0,1.12,.1);
+part(avatar,new THREE.SphereGeometry(.19,18,12),hair,-.37,.95,.08);
+part(avatar,new THREE.SphereGeometry(.19,18,12),hair,.37,.95,.08);
+part(avatar,new THREE.SphereGeometry(.045,12,8),shoe,-.16,.99,.57);
+part(avatar,new THREE.SphereGeometry(.045,12,8),shoe,.16,.99,.57);
+part(avatar,new THREE.CapsuleGeometry(.43,.7,5,12),shirt,0,.05,.12);
+part(avatar,new THREE.CapsuleGeometry(.14,.65,4,8),skin,-.48,.02,.38,0,0,-.85);
+part(avatar,new THREE.CapsuleGeometry(.14,.65,4,8),skin,.48,.02,.38,0,0,.85);
+part(avatar,new THREE.CapsuleGeometry(.19,.55,4,8),pants,-.2,-.72,.05);
+part(avatar,new THREE.CapsuleGeometry(.19,.55,4,8),pants,.2,-.72,.05);
+part(avatar,new THREE.BoxGeometry(.42,.13,.3),shoe,-.2,-1.08,.16);
+part(avatar,new THREE.BoxGeometry(.42,.13,.3),shoe,.2,-1.08,.16);
+// Desk, open laptop, router and blinking fault indicator.
+part(avatar,new THREE.BoxGeometry(3.7,.16,1.05),deskMat,0,-.47,1.0);
+for(const x of [-1.55,1.55])part(avatar,new THREE.CylinderGeometry(.055,.07,.95,10),deskMat,x,-.98,1.0);
+part(avatar,new THREE.BoxGeometry(1.42,.86,.08),makeMat(0x4b6270,0x182a35),.55,.05,1.0,-.18);
+part(avatar,new THREE.BoxGeometry(1.3,.72,.025),screenMat,.55,.05,1.05,-.18);
+for(let i=0;i<4;i++)part(avatar,new THREE.BoxGeometry(.72,.025,.015),makeMat(i===2?0xff967b:0x78d6d0),.55,.23-i*.13,1.07,-.18);
+part(avatar,new THREE.BoxGeometry(1.5,.07,.78),makeMat(0xd5d1c8,0x8d8170),.55,-.42,1.0,-.03);
+part(avatar,new THREE.BoxGeometry(.9,.16,.38),makeMat(0x394b58,0x182a35),-1.05,-.32,.72);
+for(let i=0;i<4;i++){let led=part(avatar,new THREE.SphereGeometry(.045,10,8),makeMat(i===2?0xff967b:0x78d6d0),-.3+i*.16,-.29,.72);led.userData.blink=i}
+const cable=new THREE.Mesh(new THREE.TorusGeometry(.56,.018,8,80,Math.PI*1.25),makeMat(0xff8400,0xff8400));cable.position.set(-.9,-.27,.98);cable.rotation.z=-.4;avatar.add(cable);
+const fault=new THREE.Mesh(new THREE.SphereGeometry(.13,16,12),makeMat(0xff5e49,0xff5e49));fault.position.set(-1.48,.65,.95);avatar.add(fault);
+
 const sensors=[];for(let i=0;i<8;i++){let a=i*Math.PI/4;let p=new THREE.Vector3(Math.cos(a)*3.1,Math.sin(a)*2.2,Math.sin(a*2)*.35);let node=new THREE.Mesh(new THREE.SphereGeometry(.105,16,12),makeMat(i%2?cyan:coral));node.position.copy(p);iot.add(node);sensors.push(p);let pts=[new THREE.Vector3(0,0,0),p];iot.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:cyan,transparent:true,opacity:.45})))}
 const pulseGeo=new THREE.SphereGeometry(.055,10,8);const pulses=[];for(let i=0;i<8;i++){let p=new THREE.Mesh(pulseGeo,makeMat(coral));iot.add(p);pulses.push(p)}
 // Seismic trace: a real 3D line whose amplitude evolves over time.
@@ -108,7 +176,7 @@ let wiot=1-trans1,wseq=trans1*(1-trans2),wnet=trans2;
 opacityGroup(iot,wiot);opacityGroup(seismic,wseq);opacityGroup(network,wnet);
 iot.rotation.y=Math.sin(time*.24)*.13+mouseX*.12;iot.rotation.x=Math.cos(time*.2)*.07-mouseY*.08;
 seismic.rotation.y=mouseX*.1;network.rotation.y=Math.sin(time*.18)*.08+mouseX*.12;network.rotation.x=mouseY*.06;
-root.rotation.z=Math.sin(time*.11)*.025;root.position.x=2.4+mouseX*.35;root.position.y=.15+mouseY*.2;
+root.rotation.z=Math.sin(time*.11)*.025;root.position.x=2.4+mouseX*.35;root.position.y=.15+mouseY*.2;avatar.rotation.y=Math.sin(time*.8)*.035;avatar.rotation.x=Math.sin(time*.65)*.018;fault.scale.setScalar(.82+Math.sin(time*5)*.18);
 for(let i=0;i<pulses.length;i++){let q=(time*.24+i/pulses.length)%1,p=sensors[i];pulses[i].position.set(p.x*q,p.y*q,p.z*q+.05)}
 const arr=waveGeo.attributes.position.array;for(let i=0;i<waveCount;i++){let x=(i/(waveCount-1)-.5)*10;let envelope=.18+Math.pow(Math.max(0,Math.sin(i*.012-time*.3)),5)*.85;let amp=(Math.sin(i*.12-time*2)*.13+Math.sin(i*.035-time*.7)*.16)*envelope;let spike=Math.pow(Math.max(0,Math.sin(i*.023-time*.17)),18)*Math.sin(i*.29-time*2)*.7;arr[i*3]=x;arr[i*3+1]=amp+spike;arr[i*3+2]=.15+Math.sin(i*.018)*.12}waveGeo.attributes.position.needsUpdate=true;
 quakeDot.scale.setScalar(.8+Math.sin(time*3)*.18);
