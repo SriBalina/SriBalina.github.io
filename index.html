@@ -1,7 +1,7 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5efe6">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111318">
 <meta name="description" content="Rathna Sri Balina — network engineer, curious builder, and troubleshooting enthusiast.">
 <title>Rathna Sri Balina — Engineer & curious builder</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -88,7 +88,25 @@ footer{color:#81786b}
 :root[data-theme="dark"] .socials a{border-color:rgba(244,238,228,.2)}
 @media(max-width:620px){.theme-toggle{padding:8px 10px}}
 
-</style>
+
+/* Cinematic upgrade: high-contrast midnight workspace with accessible motion. */
+:root{color-scheme:dark;--bg:#111318;--panel:#1f222b;--ink:#f4eee4;--muted:#b8b0a4;--line:rgba(244,238,228,.15);--cyan:#78d6d0;--violet:#a99aff;--coral:#ff967b}
+body{background:#111318;color:#f4eee4}
+.world-vignette{background:radial-gradient(ellipse at 76% 48%,rgba(120,214,208,.14),transparent 35%),radial-gradient(ellipse at 82% 72%,rgba(169,154,255,.13),transparent 42%),linear-gradient(90deg,rgba(17,19,24,.98) 0%,rgba(17,19,24,.91) 37%,rgba(17,19,24,.22) 100%),linear-gradient(0deg,rgba(17,19,24,.94),transparent 48%,rgba(17,19,24,.4))}
+:root:not([data-theme="light"]) .world-vignette{background:radial-gradient(ellipse at 76% 48%,rgba(120,214,208,.14),transparent 35%),radial-gradient(ellipse at 82% 72%,rgba(169,154,255,.13),transparent 42%),linear-gradient(90deg,rgba(17,19,24,.98) 0%,rgba(17,19,24,.91) 37%,rgba(17,19,24,.22) 100%),linear-gradient(0deg,rgba(17,19,24,.94),transparent 48%,rgba(17,19,24,.4))}
+.hero{min-height:calc(100svh - 84px)}
+.photo-slot{border-radius:48% 48% 18px 18px;box-shadow:0 0 80px rgba(120,214,208,.13),0 30px 110px rgba(0,0,0,.42)}
+.photo-inner{background:radial-gradient(circle,rgba(120,214,208,.16),rgba(17,19,24,.7));border-color:rgba(120,214,208,.38)}
+.photo-inner strong{color:var(--cyan);text-shadow:0 0 30px rgba(120,214,208,.45)}
+.tile,.contact-panel{border-radius:18px}
+.btn{border-radius:999px}
+.project,.timeline{transition:transform .35s ease}
+.project:hover{transform:translateX(7px)}
+.skill:hover,.tag:hover{border-color:var(--cyan);box-shadow:0 0 20px rgba(120,214,208,.12)}
+.theme-toggle{font:10px var(--mono);letter-spacing:.08em;background:transparent;color:inherit;border:1px solid var(--line);border-radius:999px;padding:9px 13px;cursor:pointer}
+:root[data-theme="dark"] .theme-toggle{color:#f4eee4}
+@media(max-width:620px){nav{gap:9px}.theme-toggle{font-size:9px;padding:7px 9px}.photo-slot{width:min(70%,260px)}}
+\n</style>
 </head>
 <body>
 <canvas id="world" aria-hidden="true"></canvas><div class="world-vignette"></div>
@@ -152,12 +170,12 @@ function part(g,geo,mat,x,y,z,rx=0,ry=0,rz=0){const m=new THREE.Mesh(geo,mat);m.
 part(avatar,new THREE.SphereGeometry(.48,24,18),skin,0,.98,.15);
 part(avatar,new THREE.SphereGeometry(.5,24,18,0,Math.PI*2,0,Math.PI*.68),hair,0,1.12,.1);
 part(avatar,new THREE.SphereGeometry(.19,18,12),hair,-.37,.95,.08);
-part(avatar,new THREE.SphereGeometry(.19,18,12),hair,.37,.95,.08);
+part(avatar,new THREE.SphereGeometry(.19,18,12),hair,.37,.95,.08);\n// Expressive eyes, brows and a subtle smile; eye scale animates for natural blinking.\nconst blinkEyes=[];for(const x of [-.17,.17]){const eye=part(avatar,new THREE.SphereGeometry(.052,12,10),makeMat(0x30231f),x,1.01,.565);blinkEyes.push(eye);part(avatar,new THREE.SphereGeometry(.075,12,8),skin,x,1.075,.55)}\npart(avatar,new THREE.TorusGeometry(.075,.012,6,18,Math.PI),makeMat(0x9b5145),0,.84,.565,0,0,Math.PI);
 part(avatar,new THREE.SphereGeometry(.045,12,8),shoe,-.16,.99,.57);
 part(avatar,new THREE.SphereGeometry(.045,12,8),shoe,.16,.99,.57);
 part(avatar,new THREE.CapsuleGeometry(.43,.7,5,12),shirt,0,.05,.12);
 part(avatar,new THREE.CapsuleGeometry(.14,.65,4,8),skin,-.48,.02,.38,0,0,-.85);
-part(avatar,new THREE.CapsuleGeometry(.14,.65,4,8),skin,.48,.02,.38,0,0,.85);
+part(avatar,new THREE.CapsuleGeometry(.14,.65,4,8),skin,.48,.02,.38,0,0,.85);\nconst typingHands=[part(avatar,new THREE.SphereGeometry(.13,14,10),skin,-.48,-.30,.77),part(avatar,new THREE.SphereGeometry(.13,14,10),skin,.48,-.30,.77)];
 part(avatar,new THREE.CapsuleGeometry(.19,.55,4,8),pants,-.2,-.72,.05);
 part(avatar,new THREE.CapsuleGeometry(.19,.55,4,8),pants,.2,-.72,.05);
 part(avatar,new THREE.BoxGeometry(.42,.13,.3),shoe,-.2,-1.08,.16);
@@ -168,13 +186,13 @@ for(const x of [-1.55,1.55])part(avatar,new THREE.CylinderGeometry(.055,.07,.95,
 part(avatar,new THREE.BoxGeometry(1.42,.86,.08),makeMat(0x4b6270,0x182a35),.55,.05,1.0,-.18);
 part(avatar,new THREE.BoxGeometry(1.3,.72,.025),screenMat,.55,.05,1.05,-.18);
 for(let i=0;i<4;i++)part(avatar,new THREE.BoxGeometry(.72,.025,.015),makeMat(i===2?0xff967b:0x78d6d0),.55,.23-i*.13,1.07,-.18);
-part(avatar,new THREE.BoxGeometry(1.5,.07,.78),makeMat(0xd5d1c8,0x8d8170),.55,-.42,1.0,-.03);
+part(avatar,new THREE.BoxGeometry(1.5,.07,.78),makeMat(0xd5d1c8,0x8d8170),.55,-.42,1.0,-.03);\n// Individually lit keyboard keys make the workstation read clearly at a glance.\nfor(let r=0;r<3;r++)for(let c=0;c<9;c++)part(avatar,new THREE.BoxGeometry(.095,.018,.075),makeMat((r+c)%7===0?0x78d6d0:0x64717b,(r+c)%7===0?0x78d6d0:0x27313a),-.02+c*.145,-.365,.73+r*.11);
 part(avatar,new THREE.BoxGeometry(.9,.16,.38),makeMat(0x394b58,0x182a35),-1.05,-.32,.72);
 for(let i=0;i<4;i++){let led=part(avatar,new THREE.SphereGeometry(.045,10,8),makeMat(i===2?0xff967b:0x78d6d0),-.3+i*.16,-.29,.72);led.userData.blink=i}
 const cable=new THREE.Mesh(new THREE.TorusGeometry(.56,.018,8,80,Math.PI*1.25),makeMat(0xff8400,0xff8400));cable.position.set(-.9,-.27,.98);cable.rotation.z=-.4;avatar.add(cable);
 const fault=new THREE.Mesh(new THREE.SphereGeometry(.13,16,12),makeMat(0xff5e49,0xff5e49));fault.position.set(-1.48,.65,.95);avatar.add(fault);
 
-const sensors=[];for(let i=0;i<8;i++){let a=i*Math.PI/4;let p=new THREE.Vector3(Math.cos(a)*3.1,Math.sin(a)*2.2,Math.sin(a*2)*.35);let node=new THREE.Mesh(new THREE.SphereGeometry(.105,16,12),makeMat(i%2?cyan:coral));node.position.copy(p);iot.add(node);sensors.push(p);let pts=[new THREE.Vector3(0,0,0),p];iot.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:cyan,transparent:true,opacity:.45})))}
+// A restrained particle field gives the hero scene depth without obscuring the content.\nconst particleCount=520,particlePositions=new Float32Array(particleCount*3);for(let i=0;i<particleCount;i++){particlePositions[i*3]=(Math.random()-.5)*18;particlePositions[i*3+1]=(Math.random()-.5)*11;particlePositions[i*3+2]=(Math.random()-.5)*8-2}\nconst particleGeo=new THREE.BufferGeometry();particleGeo.setAttribute("position",new THREE.BufferAttribute(particlePositions,3));const particleField=new THREE.Points(particleGeo,new THREE.PointsMaterial({color:0x8bdcf0,size:.025,transparent:true,opacity:.65,sizeAttenuation:true}));scene.add(particleField);\nconst sensors=[];for(let i=0;i<8;i++){let a=i*Math.PI/4;let p=new THREE.Vector3(Math.cos(a)*3.1,Math.sin(a)*2.2,Math.sin(a*2)*.35);let node=new THREE.Mesh(new THREE.SphereGeometry(.105,16,12),makeMat(i%2?cyan:coral));node.position.copy(p);iot.add(node);sensors.push(p);let pts=[new THREE.Vector3(0,0,0),p];iot.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:cyan,transparent:true,opacity:.45})))}
 const pulseGeo=new THREE.SphereGeometry(.055,10,8);const pulses=[];for(let i=0;i<8;i++){let p=new THREE.Mesh(pulseGeo,makeMat(coral));iot.add(p);pulses.push(p)}
 // Seismic trace: a real 3D line whose amplitude evolves over time.
 const waveCount=360,wavePositions=new Float32Array(waveCount*3);const waveGeo=new THREE.BufferGeometry();waveGeo.setAttribute('position',new THREE.BufferAttribute(wavePositions,3));const wave=new THREE.Line(waveGeo,new THREE.LineBasicMaterial({color:coral,transparent:true,opacity:.98}));seismic.add(wave);
@@ -195,12 +213,12 @@ let wiot=1-trans1,wseq=trans1*(1-trans2),wnet=trans2;
 opacityGroup(iot,wiot);opacityGroup(seismic,wseq);opacityGroup(network,wnet);
 iot.rotation.y=Math.sin(time*.24)*.13+mouseX*.12;iot.rotation.x=Math.cos(time*.2)*.07-mouseY*.08;
 seismic.rotation.y=mouseX*.1;network.rotation.y=Math.sin(time*.18)*.08+mouseX*.12;network.rotation.x=mouseY*.06;
-root.rotation.z=Math.sin(time*.11)*.025;root.position.x=2.4+mouseX*.35;root.position.y=.15+mouseY*.2;avatar.rotation.y=Math.sin(time*.8)*.035;avatar.rotation.x=Math.sin(time*.65)*.018;fault.scale.setScalar(.82+Math.sin(time*5)*.18);
+root.rotation.z=Math.sin(time*.11)*.025;root.position.x=2.4+mouseX*.35+Math.sin(sy*.00045)*.12;root.position.y=.15+mouseY*.2+Math.sin(sy*.0007)*.10;avatar.rotation.y=Math.sin(time*.8)*.035+mouseX*.045;avatar.rotation.x=Math.sin(time*.65)*.018;avatar.position.y=-.2+Math.sin(time*1.6)*.025;fault.scale.setScalar(.82+Math.sin(time*5)*.18);\n// Blink every few seconds and keep the hands gently typing.\nconst blinkPhase=time%4.2;const blink=blinkPhase>3.82&&blinkPhase<4.02?Math.max(.08,Math.abs(blinkPhase-3.92)*20):1;blinkEyes.forEach(eye=>eye.scale.y=blink);typingHands.forEach((hand,i)=>{hand.position.y=-.30+Math.sin(time*11+i*Math.PI)*.025;hand.position.x=(i===0?-.48:.48)+Math.sin(time*7+i)*.012});particleField.rotation.y=time*.012;particleField.rotation.x=Math.sin(time*.08)*.025;
 for(let i=0;i<pulses.length;i++){let q=(time*.24+i/pulses.length)%1,p=sensors[i];pulses[i].position.set(p.x*q,p.y*q,p.z*q+.05)}
 const arr=waveGeo.attributes.position.array;for(let i=0;i<waveCount;i++){let x=(i/(waveCount-1)-.5)*10;let envelope=.18+Math.pow(Math.max(0,Math.sin(i*.012-time*.3)),5)*.85;let amp=(Math.sin(i*.12-time*2)*.13+Math.sin(i*.035-time*.7)*.16)*envelope;let spike=Math.pow(Math.max(0,Math.sin(i*.023-time*.17)),18)*Math.sin(i*.29-time*2)*.7;arr[i*3]=x;arr[i*3+1]=amp+spike;arr[i*3+2]=.15+Math.sin(i*.018)*.12}waveGeo.attributes.position.needsUpdate=true;
 quakeDot.scale.setScalar(.8+Math.sin(time*3)*.18);
 packets.forEach((p,i)=>{let edge=netLines[i%netLines.length],q=(time*.18+i/packets.length)%1;p.position.lerpVectors(edge.a,edge.b,q)});
-camera.position.x+=(mouseX*.48-camera.position.x)*.025;camera.position.y+=(-mouseY*.3-camera.position.y)*.025;camera.lookAt(0,0,0);renderer.render(scene,camera);
+const targetZ=15-Math.min(1.2,sy/Math.max(1,document.body.scrollHeight)*2.2);camera.position.z+=(targetZ-camera.position.z)*.018;camera.position.x+=(mouseX*.48-camera.position.x)*.025;camera.position.y+=(-mouseY*.3-camera.position.y)*.025;camera.lookAt(0,0,0);renderer.render(scene,camera);
 }
 function resize(){if(!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setPixelRatio(Math.min(devicePixelRatio,innerWidth<650?1.15:1.6));renderer.setSize(innerWidth,innerHeight)}
 addEventListener('resize',resize,{passive:true});addEventListener('pointermove',e=>{mouseX=(e.clientX/innerWidth-.5)*2;mouseY=(e.clientY/innerHeight-.5)*2},{passive:true});
