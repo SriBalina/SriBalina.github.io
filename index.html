@@ -106,6 +106,19 @@ body{background:#111318;color:#f4eee4}
 .theme-toggle{font:10px var(--mono);letter-spacing:.08em;background:transparent;color:inherit;border:1px solid var(--line);border-radius:999px;padding:9px 13px;cursor:pointer}
 :root[data-theme="dark"] .theme-toggle{color:#f4eee4}
 @media(max-width:620px){nav{gap:9px}.theme-toggle{font-size:9px;padding:7px 9px}.photo-slot{width:min(70%,260px)}}
+\n
+:root[data-theme="light"]{color-scheme:light;--bg:#f5efe6;--panel:#fffaf2;--ink:#2d2a24;--muted:#756f65;--line:rgba(45,42,36,.16);--cyan:#ff8400;--violet:#c5a6e8;--coral:#ef795b}
+:root[data-theme="light"] body{background:#f5efe6;color:#2d2a24}
+:root[data-theme="light"] .world-vignette{background:radial-gradient(ellipse at 77% 48%,rgba(255,132,0,.10),transparent 42%),linear-gradient(90deg,rgba(245,239,230,.98) 0%,rgba(245,239,230,.93) 37%,rgba(245,239,230,.23) 100%),linear-gradient(0deg,rgba(245,239,230,.92),transparent 48%,rgba(245,239,230,.35))}
+:root[data-theme="light"] .brand,:root[data-theme="light"] h1,:root[data-theme="light"] h2,:root[data-theme="light"] .intro strong,:root[data-theme="light"] .meta b,:root[data-theme="light"] .contact-panel strong{color:#2d2a24}
+:root[data-theme="light"] nav a,:root[data-theme="light"] .intro,:root[data-theme="light"] .lede,:root[data-theme="light"] .tile p,:root[data-theme="light"] .project p,:root[data-theme="light"] .timeline-item p,:root[data-theme="light"] .contact-panel p,:root[data-theme="light"] .socials a{color:#655f55}
+:root[data-theme="light"] .tile,:root[data-theme="light"] .contact-panel{background:rgba(255,250,242,.82);border-color:rgba(45,42,36,.14)}
+:root[data-theme="light"] .photo-slot{background:radial-gradient(circle at 50% 38%,#fff8ed 0%,#f5d8b5 58%,#e9c49b 100%)}
+:root[data-theme="light"] .photo-inner{background:rgba(255,250,242,.66)}
+:root[data-theme="light"] .photo-inner small,:root[data-theme="light"] .photo-caption,:root[data-theme="light"] .scroll-hint,:root[data-theme="light"] .meta,:root[data-theme="light"] footer{color:#81786b}
+:root[data-theme="light"] .theme-toggle,:root[data-theme="light"] .btn{color:#2d2a24;border-color:rgba(45,42,36,.3)}
+:root[data-theme="light"] .btn.primary{background:#ff8400;border-color:#ff8400;color:#fffaf2}
+:root[data-theme="light"] .tag,:root[data-theme="light"] .skill{background:rgba(255,250,242,.8);border-color:rgba(45,42,36,.17);color:#71695e}
 \n</style>
 </head>
 <body>
@@ -213,7 +226,7 @@ let wiot=1-trans1,wseq=trans1*(1-trans2),wnet=trans2;
 opacityGroup(iot,wiot);opacityGroup(seismic,wseq);opacityGroup(network,wnet);
 iot.rotation.y=Math.sin(time*.24)*.13+mouseX*.12;iot.rotation.x=Math.cos(time*.2)*.07-mouseY*.08;
 seismic.rotation.y=mouseX*.1;network.rotation.y=Math.sin(time*.18)*.08+mouseX*.12;network.rotation.x=mouseY*.06;
-root.rotation.z=Math.sin(time*.11)*.025;root.position.x=2.4+mouseX*.35+Math.sin(sy*.00045)*.12;root.position.y=.15+mouseY*.2+Math.sin(sy*.0007)*.10;avatar.rotation.y=Math.sin(time*.8)*.035+mouseX*.045;avatar.rotation.x=Math.sin(time*.65)*.018;avatar.position.y=-.2+Math.sin(time*1.6)*.025;fault.scale.setScalar(.82+Math.sin(time*5)*.18);\n// Blink every few seconds and keep the hands gently typing.\nconst blinkPhase=time%4.2;const blink=blinkPhase>3.82&&blinkPhase<4.02?Math.max(.08,Math.abs(blinkPhase-3.92)*20):1;blinkEyes.forEach(eye=>eye.scale.y=blink);typingHands.forEach((hand,i)=>{hand.position.y=-.30+Math.sin(time*11+i*Math.PI)*.025;hand.position.x=(i===0?-.48:.48)+Math.sin(time*7+i)*.012});particleField.rotation.y=time*.012;particleField.rotation.x=Math.sin(time*.08)*.025;
+root.rotation.z=Math.sin(time*.11)*.025;root.position.x=2.4+mouseX*.35+Math.sin(sy*.00045)*.12;root.position.y=.15+mouseY*.2+Math.sin(sy*.0007)*.10;avatar.rotation.y=Math.sin(time*.8)*.035+mouseX*.045;avatar.rotation.x=Math.sin(time*.65)*.018;avatar.position.y=-.2+Math.sin(time*1.6)*.025;fault.scale.setScalar(.82+Math.sin(time*5)*.18);\n// Blink every few seconds and keep the hands gently typing.\nconst blinkPhase=time%4.2;const blink=blinkPhase>3.82&&blinkPhase<4.02?Math.min(1,Math.max(.08,Math.abs(blinkPhase-3.92)*20)):1;blinkEyes.forEach(eye=>eye.scale.y=blink);typingHands.forEach((hand,i)=>{hand.position.y=-.30+Math.sin(time*11+i*Math.PI)*.025;hand.position.x=(i===0?-.48:.48)+Math.sin(time*7+i)*.012});particleField.rotation.y=time*.012;particleField.rotation.x=Math.sin(time*.08)*.025;
 for(let i=0;i<pulses.length;i++){let q=(time*.24+i/pulses.length)%1,p=sensors[i];pulses[i].position.set(p.x*q,p.y*q,p.z*q+.05)}
 const arr=waveGeo.attributes.position.array;for(let i=0;i<waveCount;i++){let x=(i/(waveCount-1)-.5)*10;let envelope=.18+Math.pow(Math.max(0,Math.sin(i*.012-time*.3)),5)*.85;let amp=(Math.sin(i*.12-time*2)*.13+Math.sin(i*.035-time*.7)*.16)*envelope;let spike=Math.pow(Math.max(0,Math.sin(i*.023-time*.17)),18)*Math.sin(i*.29-time*2)*.7;arr[i*3]=x;arr[i*3+1]=amp+spike;arr[i*3+2]=.15+Math.sin(i*.018)*.12}waveGeo.attributes.position.needsUpdate=true;
 quakeDot.scale.setScalar(.8+Math.sin(time*3)*.18);
@@ -229,9 +242,9 @@ gsap.from('.hero-copy > *',{y:22,autoAlpha:0,duration:.9,stagger:.09,ease:'power
 document.querySelector('#year').textContent=new Date().getFullYear();
 const themeButton=document.querySelector('#themeToggle');
 const savedTheme=localStorage.getItem('portfolio-theme');
-if(savedTheme==='dark')document.documentElement.dataset.theme='dark';
+if(savedTheme==='dark')document.documentElement.dataset.theme='dark';else if(savedTheme==='light')document.documentElement.dataset.theme='light';
 function syncThemeButton(){const dark=document.documentElement.dataset.theme==='dark';themeButton.textContent=dark?'☀ LIGHT':'☾ DARK';themeButton.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode');document.querySelector('meta[name="theme-color"]').content=dark?'#111318':'#f5efe6'}
 syncThemeButton();
-themeButton.addEventListener('click',()=>{const dark=document.documentElement.dataset.theme==='dark';if(dark)delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme='dark';localStorage.setItem('portfolio-theme',dark?'light':'dark');syncThemeButton()});
+themeButton.addEventListener('click',()=>{const dark=document.documentElement.dataset.theme==='dark';if(dark)document.documentElement.dataset.theme='light';else document.documentElement.dataset.theme='dark';localStorage.setItem('portfolio-theme',dark?'light':'dark');syncThemeButton()});
 </script>
 </body></html>
